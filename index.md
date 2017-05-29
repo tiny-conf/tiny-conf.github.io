@@ -1,29 +1,22 @@
-## Welcome to GitHub Pages
+### Install
+```sh
+npm i tiny-conf -S
+```
 
-You can use the [editor on GitHub](https://github.com/tiny-conf/tiny-conf.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+### Usage
+In `app.js`
+```js
+const config = require('tiny-conf');
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+config.set('foo', 'bar');
+config.set('nested.prop', 42);
+```
+In `another-file.js`
+```js
+const config = require('tiny-conf');
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+const val0 = config.get('foo'); // val0 === 'bar'   
+const val1 = config.get('nested.prop'); // val1 === 42
 ```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).

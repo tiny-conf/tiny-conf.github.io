@@ -19,12 +19,56 @@ const val0 = config.get('foo'); // val0 === 'bar'
 const val1 = config.get('nested.prop'); // val1 === 42
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Plugins
+#### plugin-argv
+Add `tiny-conf-plugin-argv` to your dependencies:
+```sh
+npm i tiny-conf-plugin-argv -S
+```
+And then configure `tiny-conf` to use the `argv` plugin:
+```js
+const config = require('tiny-conf');
 
-### Jekyll Themes
+require('tiny-conf-plugin-argv')(config);
+```
+`argv` uses [yargs-parser]() to parse the command-line arguments passed to your program and add them to your `config`:
+```sh
+node app.js --foo=bar --nested.prop=42
+```
+Will make `foo` and `nested.prop` available to tiny-conf:
+```js
+const config = require('tiny-conf');
+require('tiny-conf-plugin-argv')(config);
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/tiny-conf/tiny-conf.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+const val0 = config.get('foo'); // val0 === 'bar'   
+const val1 = config.get('nested.prop'); // val1 === 42
+```
+#### plugin-file
+Add `tiny-conf-plugin-file` to your dependencies:
+```sh
+npm i tiny-conf-plugin-file -S
+```
+And then configure `tiny-conf` to use the `file` plugin:
+```js
+const config = require('tiny-conf');
 
-### Support or Contact
+require('tiny-conf-plugin-file')(config, '/path/to/your/default/config.json');
+```
+`file` will parse your `/path/to/your/default/config.json` and add it to your `config`:
+In `/path/to/your/default/config.json`:
+```json
+{
+  "foo": "bar",
+  "nested": {
+    "prop": 42
+  }
+}
+```
+Will make `foo` and `nested.prop` available to tiny-conf:
+```js
+const config = require('tiny-conf');
+require('tiny-conf-plugin-file')(config, '/path/to/your/default/config.json');
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+const val0 = config.get('foo'); // val0 === 'bar'   
+const val1 = config.get('nested.prop'); // val1 === 42
+```
